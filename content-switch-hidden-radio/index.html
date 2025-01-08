@@ -1,62 +1,57 @@
 <style>
-input[name="filters"], .en {
+
+[data-lang] {
+    display: none
+}
+
+[data-lang].active {
+    display: initial
+}
+
+input {
     display: none;
+}
+
+input:checked + label {
+    opacity: 1;
 }
 
 label {
     opacity: 0.5;
     cursor: pointer;
 }
-
-input[name="filters"]:checked + label {
-    opacity: 1;
-}
+    
 </style>
-
+    
 <div>
-    <input type="radio" name="filters" value="pt" id="check-pt" checked>
+    <input type="radio" name="filters" value="pt" class="input-filters" id="check-pt" checked>
     <label for="check-pt">
-      <img draggable="false" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/125px-Flag_of_Portugal.svg.png" alt="Portuguese Flag">
+        <img draggable="false" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/125px-Flag_of_Portugal.svg.png" alt="Portuguese Flag">
     </label>
-  
+    
     <input type="radio" name="filters" value="en" class="input-filters" id="check-en">
     <label for="check-en">
-      <img draggable="false" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Flag_of_England.svg/125px-Flag_of_England.svg.png" alt="English Flag">
+        <img draggable="false" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Flag_of_England.svg/125px-Flag_of_England.svg.png" alt="English Flag">
     </label>
 </div>
-  
+    
 <div class="content-switch">
     <p>
-    <span class="pt">Exemplo em Português</span>
-    <span class="en">Example in English
-    </span>
+        <span data-lang="pt">Exemplo em Português</span>
+        <span data-lang="en">Example in English</span>
     </p>
 </div>
-
+    
 <script>
-document.querySelectorAll('input[name="filters"]').forEach(function (radio) {
-  radio.addEventListener('change', function () {
-    const contentSwitches = document.querySelectorAll('.content-switch');
-    contentSwitches.forEach(function (contentSwitch) {
-      const ptContents = contentSwitch.querySelectorAll('.pt');
-      const enContents = contentSwitch.querySelectorAll('.en');
-
-      if (radio.value === 'pt') {
-        ptContents.forEach(function (element) {
-          element.style.display = 'initial';
+document.querySelectorAll('.input-filters').forEach(radio => {
+    radio.addEventListener('change', () => {
+        const selectedLang = radio.value;
+        document.querySelectorAll('[data-lang]').forEach(element => {
+            element.classList.toggle('active', element.dataset.lang === selectedLang);
         });
-        enContents.forEach(function (element) {
-          element.style.display = 'none';
-        });
-      } else if (radio.value === 'en') {
-        ptContents.forEach(function (element) {
-          element.style.display = 'none';
-        });
-        enContents.forEach(function (element) {
-          element.style.display = 'initial';
-        });
-      }
     });
-  });
-}); 
+});
+
+// Initialize with default language
+document.querySelector('.input-filters:checked').dispatchEvent(new Event('change'));
 </script>
